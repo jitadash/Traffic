@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Traffic Calculation</title>
+  <meta name="description" content="Traffic Calculation">
+  <link rel="stylesheet" href="css/style.css?v=1">
+  <style>
+	html, body{
+		margin: 0;
+		padding: 0;
+	}
+	.fl {
+		float:left;
+	}
+	.fr {
+		float:right;
+	}
+	.ml13 {
+		margin-left:13px;
+	}
+	#content {
+		width:300px;
+	}
+	progress {
+	  color: #FFFF00;
+	  font-size: .6em;
+	  line-height: 1.5em;
+	  text-indent: .5em;
+	  width: 15em;
+	  height: 2px;
+	  background: #FF0000;
+	  border:none;
+	}
+	progress::-webkit-progress-bar { background: #FFFF00; }
+	progress::-webkit-progress-value { background: #FFFF00; }
+
+	#sortable {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		display:inline-block;
+		border-bottom: 1px solid #C3C3C3;
+		border-left: medium none;
+		border-right: medium none;
+		border-top: 1px solid #C3C3C3;
+		width:100px;
+		float:left;
+	}
+	#sortable li.ui-state-default{
+		font-size: 10px;
+		height: 30px;
+		margin: 3px 3px 3px 0;
+		padding: 1px;
+		text-align: center;
+		width: 30px;
+		color: #333333;
+		font-weight: normal;
+		border-left: 1px solid #C3C3C3;
+        border-right: 1px solid #C3C3C3;
+		border-top: medium none;
+		border-bottom: medium none;
+		font-weight:bold;
+	}
+  </style>
+</head>
+
+<body>
+  <section>
+    <div id="wrapper">
+    	<header>
+            <h1></h1>
+		</header>
+		<form id="trafficData" method="post" action="">
+		  <div id="content">
+              <p>		  
+				<label>Input Traffic Update  </label>
+				<input type = "text" name = "myText" class="ml13" value = "" required="" pattern="[-+]?[0-9]*[-]?[0-9][,.]?[0-9]*[-]?[0-9]+"/>
+			  </p>
+			  <p>
+				<label>Select Traffic category</label>
+				 <select name = "trafficList" >
+				   <option value = "EnterTrafficDetails" selected="selected">Enter Traffic Details</option>
+				   <option value = "Traffic">Traffic</option>
+				   <option value = "NoTraffic">No Traffic</option>
+				 </select>
+			  </p>
+			  <p>
+			    <label>Traffic Range</label>
+				<progress value="5" max="20"></progress>
+			  </p>
+			  <div>
+				  <ul id="sortable" class="withTraffic">
+				    <li><div>Trffic Range</div></li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+				</ul>
+				
+				<ul id="sortable" class="noTraffic">
+				    <li><div style="white-space:nowrap;">No Traffic Range</div></li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+					<li class="ui-state-default">1-3</li>
+					<li class="ui-state-default">2-5</li>
+					<li class="ui-state-default">3-8</li>
+					<li class="ui-state-default">4-10</li>
+				</ul>
+			 </div>
+			 <div style="clear:both;"></div>
+			   
+			   <div style="text-align:center;">
+				<input type="submit" name="button" value="Submit" />
+				<input type="reset" name="resetbutton" value="Reset" />
+			   </div>
+		    </div>	
+			<div id="loading"></div>
+		</form>
+	</div>
+ </section>
+ <footer>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>	
+</footer>
+<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	$(document).ready(function() {
+		$('#trafficData').submit(function(e) {
+		    e.preventDefault();
+			//var trafficdeatils = $(this).serializeArray();
+			//console.log(trafficdeatils);
+			formData = $(this).serializeArray();
+			console.log(formData);
+			$.ajax({
+				url: "mystaticTrafficData.html",
+				data: formData,
+				type: "POST",
+				dataType: "json"
+			}).done(function ( data ) {
+				alert(data);
+			}).fail(function() {
+				alert("Sorry, there seems to be a problem contacting the server.");
+			});
+		});
+		//$.ajaxComplete(function() {
+			//$("div#loading").text("");
+		//});
+	});
+</script>
+</body>
+</html>
